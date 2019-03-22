@@ -1,0 +1,42 @@
+{
+  "pair": {
+    "title": "Add Surveillance Station",
+    "nosettings": "Please fill in all the required fields.",
+    "unauthorized": "Error 401: user credentials are missing or this user is not authorized, make sure you have entered the correct user credentials.",
+    "servererror": "Error 500: internal server error",
+    "timeout": "Timeout error: make sure you have entered the correct IP address and that Surveillance Station is on the same network as Homey.",
+    "unknownerror": "Unknown error, are you sure you have entered the correct IP address and Homey is on the same network as the Surveillance Station? Please check your settings and try again.",
+    "intro": "Enter the IP address, username and password for your Surveillance Station instance.",
+    "address": "IP Address",
+    "port": "Port",
+    "username": "Username",
+    "password": "Password",
+    "polling": "Polling Frequency",
+    "test" : "Test Connection",
+    "testing" : "Connection test succesfull, you can now connect the Surveillance Station instance.",
+    "connect": "Connect",
+    "success": "Surveillance Station instance added succesfully"
+  },
+  "settings": {
+      "title": "Surveillance Station Settings",
+      "intro-email": "These settings are needed for sending snapshot images through email. If you wish to send emails through Gmail SMTP servers and you are using 2-step authentication you first need to create an <a href='https://support.google.com/accounts/answer/185833' target='_blank'>app password</a> in your Google Account.",
+      "emailsettings": "Email Settings",
+      "username": "Email Username",
+      "password": "Email Password",
+      "hostname": "SMTP Server",
+      "port": "SMTP Port",
+      "sender": "Sender Email Address",
+      "secure": "Encrypted Connection",
+      "testemail": "Test Email Settings",
+      "saveemail": "Save Email Settings",
+      "testing": "Settings have been tested succesfully. You should have received a test email.",
+      "success": "Settings have been saved succesfully."
+  },
+  "Unreachable": "Unreachable",
+  "This is a test email which confirms your email settings in the Surveillance Station App are correct.": "This is a test email which confirms your email settings in the Surveillance Station App are correct.",
+  "<h1>Surveillance Station App</h1><p>This is a test email which confirms your email settings in the Surveillance Station App are correct.</p>": "<h1>Surveillance Station App</h1><p>This is a test email which confirms your email settings in the Surveillance Station App are correct.</p>",
+  "<h1>Surveillance Station App</h1><p>This snapshot was taken at ": "<h1>Surveillance Station App</h1><p>This snapshot was taken at ",
+  "Something went wrong": "Something went wrong.",
+  "Camera not available, unable to create snapshot.": "Camera not available, unable to create snapshot.",
+  "Camera not available": "Camera not available"
+}
