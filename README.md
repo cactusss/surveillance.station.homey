@@ -36,5 +36,6 @@ After that you can add your Synology Surveillance Center as device within Homey 
 To be able to send snapshots through email you will need to configure an email account which sends out the email. In the general settings of the Surveillance Station App there is a section to configure your email account. Please pay attention to the extra information when adding a Gmail account, this requires you to use a specific app password which needs to be setup within your Google account.
 
 ## Changelog
-### v1.0.0 - 2019-03-22
-* NEW: initial version
+### v1.1.0 - 2019-05-24
+BREAKING CHANGES: this update will break the snapshot tokens, both the global and the trigger card tokens. The snapshot tokens have been updated to an officially supported image token that has been made available with firmware 2.2.0 and smartphone app version 2.4.0. You will have to update your flows where these snapshot tokens are in use.
+* IMPROVEMENT: support for the new devices / driver images

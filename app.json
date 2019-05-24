@@ -10,8 +10,8 @@
 		"en": [ "synology", "surveillance station", "security" ],
 		"nl": [ "synology", "surveillance station", "beveiliging" ]
 	},
-	"version": "1.0.0",
-	"compatibility": ">=2.0.0",
+	"version": "1.1.0",
+	"compatibility": ">=2.2.0",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",

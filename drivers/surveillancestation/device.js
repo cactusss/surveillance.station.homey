@@ -9,29 +9,19 @@ class SurveillanceStationDevice extends Homey.Device {
 
     let cameras = await util.getCameras(this.getSetting('address'), this.getSetting('port'), this.getSetting('username'), this.getSetting('password'));
     for (let camera of cameras) {
-      let cameraSnapshot = new Homey.Image('jpg');
-      cameraSnapshot.setBuffer(async () => {
+      this.cameraSnapshot = new Homey.Image();
+      this.cameraSnapshot.setStream(async (stream) => {
         try {
-          return await util.getSnapshot(this.getSetting('address'), this.getSetting('port'), this.getSetting('username'), this.getSetting('password'), camera.id, 'false');
+          const base64 = await util.getSnapshot(this.getSetting('address'), this.getSetting('port'), this.getSetting('username'), this.getSetting('password'), camera.id, 'false');
+          return stream.write(base64);
         } catch(error) {
           throw new Error(error);
         }
       });
 
-      cameraSnapshot.register()
+      this.cameraSnapshot.register()
         .then(() => {
-          let cameraSnapshotToken = new Homey.FlowToken(camera.name, {
-            type: 'image',
-            title: camera.name +' Snapshot'
-          })
-
-          cameraSnapshotToken
-            .register()
-            .then(() => {
-              cameraSnapshotToken.setValue(cameraSnapshot);
-            })
-            .catch(this.error.bind(this, 'cameraSnapshotToken.register'));
-
+          return this.setCameraImage(camera.name, camera.name +' Snapshot', this.cameraSnapshot);
         })
         .catch(this.error.bind(this, 'cameraSnapshot.register'));
     }

@@ -1,6 +1,6 @@
 {
   "name": "surveillance.station.homey",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Connect Homey with Synology Surveillance Station",
   "main": "app.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/jghaanstra/surveillance.station.homey#readme",
   "dependencies": {
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.0",
     "nodemailer": "^5.1.1"
   }
 }
