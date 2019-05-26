@@ -8,28 +8,28 @@ class SurveillanceStationDevice extends Homey.Device {
 
   async onInit() {
 
-    let cameras = await util.getCameras(this.getSetting('address'), this.getSetting('port'), this.getSetting('username'), this.getSetting('password'));
+    this.updateSessionId();
+    this.updateSessionIdInterval = setInterval(this.updateSessionId.bind(this), 60 * 60 * 1000);
+
+    let path_cameras = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=9&basic=true&method="List"&_sid='+ this.getStoreValue('sid');
+    let cameras = await util.getCameras(path_cameras);
     for (let camera of cameras) {
       this.cameraSnapshot = new Homey.Image();
       this.cameraSnapshot.setStream(async (stream) => {
-        try {
-          let login_path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/auth.cgi?api=SYNO.API.Auth&method=Login&version=6&account='+ this.getSetting('username') +'&passwd='+ this.getSetting('password') +'&session=SurveillanceStation&format=sid';
-          let sid = await util.sendCommand(login_path);
-          let path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=8&cameraId='+ camera.id +'&method=GetSnapshot&_sid='+ sid.data.sid;
-          let image = await util.sendCommandStream(path);
-          if(!image.ok)
-            throw new Error('Invalid Response');
+        let path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=8&cameraId='+ camera.id +'&method=GetSnapshot&_sid='+ this.getStoreValue('sid');
+        let image = await util.sendCommandStream(path);
+        if(!image.ok)
+          throw new Error('Invalid Response');
 
-          setTimeout(() => {
-            let logout_path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/auth.cgi?api=SYNO.API.Auth&method=Logout&version=6&session=SurveillanceStation&_sid='+ sid.data.sid;
-            let logout = util.sendCommand(logout_path);
-          }, 3000);
+        return image.body.pipe(stream);
 
-          return image.body.pipe(stream);
+        stream.on('error', () => {
+          throw new Error('Image Stream Error');
+        });
 
-        } catch (error) {
-          return reject(error);
-        }
+        stream.on('timeout', () => {
+          throw new Error('Image Stream Timeout');
+        });
       });
 
       this.cameraSnapshot.register()
@@ -42,6 +42,29 @@ class SurveillanceStationDevice extends Homey.Device {
 
     }
 
+  }
+
+  onDeleted() {
+    clearInterval(this.updateSessionIdInterval);
+  }
+
+  // HELPER FUNCTIONS
+  async updateSessionId() {
+    /* saving current sid */
+    if (this.getStoreValue('sid')) {
+      var current_sid = this.getStoreValue('sid');
+    }
+
+    /* get new id */
+    let login_path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/auth.cgi?api=SYNO.API.Auth&method=Login&version=6&account='+ this.getSetting('username') +'&passwd='+ this.getSetting('password') +'&session=SurveillanceStation&format=sid';
+    let sid = await util.sendCommand(login_path);
+    this.setStoreValue('sid', sid.data.sid);
+
+    /* logout old session */
+    if (current_sid) {
+      let logout_path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/auth.cgi?api=SYNO.API.Auth&method=Logout&version=6&session=SurveillanceStation&_sid='+ current_sid;
+      let logout = await util.sendCommand(logout_path);
+    }
   }
 
 }
