@@ -18,10 +18,20 @@ class SurveillanceStationDevice extends Homey.Device {
       this.cameraSnapshot.setStream(async (stream) => {
         let path = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=8&cameraId='+ camera.id +'&method=GetSnapshot&_sid='+ this.getStoreValue('sid');
         let image = await util.sendCommandStream(path);
-        if(!image.ok)
-          throw new Error('Invalid Response');
 
-        return image.body.pipe(stream);
+        if (image.headers.get('Content-Type') == 'image/jpeg') {
+          return image.body.pipe(stream);
+        } else if (image.headers.get('Content-Type') == 'application/json; charset="UTF-8"') {
+          var json = await image.json();
+          if (json.error.code === 402) {
+            var img = 'disabled.png';
+          } else {
+            var img = 'offline.png';
+          }
+          let offline_path = `http://${ await Homey.ManagerCloud.getLocalAddress() }/app/surveillance.station.homey/assets/`+ img;
+          let offline = await util.sendCommandStream(offline_path);
+          return offline.body.pipe(stream);
+        }
 
         stream.on('error', () => {
           throw new Error('Image Stream Error');
