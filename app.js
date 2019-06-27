@@ -58,7 +58,25 @@ class SurveillanceStationApp extends Homey.App {
           return Promise.reject(error);
         }
       })
-
+      
+    new Homey.FlowCardAction('setMotionState')
+      .register()
+      .registerRunListener(async (args, state) => {
+        try {
+          let motionstate = args.motionstate == 'disabled' ? '-1' : '1';
+          let motionstate_path = 'http://'+ args.device.getSetting('address') +':'+ args.device.getSetting('port') +'/webapi/entry.cgi?source='+ motionstate +'&api=SYNO.SurveillanceStation.Camera.Event&version=1&camId="'+ args.camera.id +'"&method=MDParamSave&_sid='+ args.device.getStoreValue('sid');
+          let result = await util.sendCommand(motionstate_path);
+          return Promise.resolve(result);
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }) 
+      .getArgument('camera')
+      .registerAutocompleteListener((query, args) => {
+        let path_cameras = 'http://'+ args.device.getSetting('address') +':'+ args.device.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=9&basic=true&method="List"&_sid='+ args.device.getStoreValue('sid');
+        return util.getCameras(path_cameras);
+      })
+                     
     new Homey.FlowCardAction('switchCameraState')
       .register()
       .registerRunListener(async (args, state) => {

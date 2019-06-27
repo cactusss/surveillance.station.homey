@@ -223,6 +223,52 @@
           }
 				]
 			},
+		{
+				"id": "setMotionState",
+				"title": {
+					"en": "Set Motion Detection State",
+					"nl": "Bewegingsdetectie status instellen"
+				},
+				"args": [
+				{
+            "name": "camera",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Select Camera",
+              "nl": "Selecteer camera"
+            }
+          },
+          {
+            "name": "motionstate",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "disabled",
+                "label": {
+                  "en": "Disabled",
+                  "nl": "Uitgeschakeld"
+                }
+              },
+              {
+                "id": "enabled",
+                "label": {
+                  "en": "Enabled",
+                  "nl": "Ingeschakeld"
+                }
+              }
+            ]
+          },
+          {
+						"name": "device",
+						"type": "device",
+            "placeholder": {
+							"en": "Select Surveillance Station",
+							"nl": "Selecteer Surveillance Station"
+						},
+						"filter": "driver_id=surveillancestation"
+          }
+				]
+			},	
       {
 				"id": "switchCameraState",
 				"title": {
