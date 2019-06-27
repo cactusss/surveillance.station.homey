@@ -10,7 +10,7 @@
 		"en": [ "synology", "surveillance station", "security" ],
 		"nl": [ "synology", "surveillance station", "beveiliging" ]
 	},
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"compatibility": ">=2.2.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -268,7 +268,7 @@
 						"filter": "driver_id=surveillancestation"
           }
 				]
-			},	
+			},
       {
 				"id": "switchCameraState",
 				"title": {
