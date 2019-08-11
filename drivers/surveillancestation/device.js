@@ -8,6 +8,7 @@ class SurveillanceStationDevice extends Homey.Device {
 
   async onInit() {
 
+    this.setAvailable();
     this.updateSessionId();
     this.updateSessionIdInterval = setInterval(this.updateSessionId.bind(this), 60 * 60 * 1000);
 
