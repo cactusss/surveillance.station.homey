@@ -10,8 +10,8 @@
 		"en": [ "synology", "surveillance station", "security" ],
 		"nl": [ "synology", "surveillance station", "beveiliging" ]
 	},
-	"version": "1.1.2",
-	"compatibility": ">=2.2.0",
+	"version": "1.2.0",
+	"compatibility": ">=2.5.1",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",
@@ -40,9 +40,31 @@
 	"dependencies": {
 		"net": "*"
 	},
+  "discovery": {
+    "surveillancestation": {
+      "type": "mdns-sd",
+      "mdns-sd": {
+        "name": "http",
+        "protocol": "tcp"
+      },
+      "id": "{{txt.mac_address}}",
+      "conditions": [
+        [
+          {
+            "field": "txt.vendor",
+            "match": {
+              "type": "regex",
+              "value": "^Synology"
+            }
+          }
+        ]
+      ]
+    }
+  },
 	"drivers": [
 		{
 			"id": "surveillancestation",
+      "discovery": "surveillancestation",
 			"name": {
 				"en": "Surveillance Station",
 				"nl": "Surveillance Station"
@@ -55,10 +77,27 @@
 			"capabilities": [
 			],
       "pair": [
-				{
-					"id": "start"
-				}
-			],
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "options": {
+            "singular": true
+          },
+          "navigation": {
+            "next": "login_credentials"
+          }
+        },
+        {
+          "id": "login_credentials",
+          "template": "login_credentials",
+          "options": {
+            "logo": "../assets/surveillancestation.png"
+          }
+        },
+        {
+          "id": "add_device"
+        }
+      ],
       "settings": [
 				{
 					"type": "group",
