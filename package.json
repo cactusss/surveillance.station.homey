@@ -1,6 +1,6 @@
 {
   "name": "surveillance.station.homey",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Connect Homey with Synology Surveillance Station",
   "main": "app.js",
   "scripts": {

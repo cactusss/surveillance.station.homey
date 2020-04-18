@@ -10,7 +10,7 @@
 		"en": [ "synology", "surveillance station", "security" ],
 		"nl": [ "synology", "surveillance station", "beveiliging" ]
 	},
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"compatibility": ">=2.5.1",
 	"author": {
 		"name": "Jelger Haanstra",

@@ -16,7 +16,7 @@ class SurveillanceStationApp extends Homey.App {
       .registerRunListener(async (args, state) => {
         let path = 'http://'+ args.device.getSetting('address') +':'+ args.device.getSetting('port') +'/webapi/entry.cgi?api=SYNO.SurveillanceStation.Camera&version=8&basic=true&method=GetInfo&cameraIds='+ args.camera.id +'&_sid='+ args.device.getStoreValue('sid');
         let result = await util.sendCommand(path);
-        if (result.data.cameras[0].state == 0) {
+        if (result.data.cameras[0].enabled) {
           return Promise.resolve(true);
         } else {
           return Promise.resolve(false);
