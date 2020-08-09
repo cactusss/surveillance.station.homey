@@ -1,17 +1,21 @@
-"use strict";
+'use strict';
 
 const Homey = require('homey');
-const util = require('/lib/util.js');
+const Util = require('/lib/util.js');
 
 class SurveillanceStationDriver extends Homey.Driver {
 
-  onPair(socket) {
+  onInit() {
+    if (!this.util) this.util = new Util({homey: this.homey});
+  }
+
+  onPair(session) {
     const discoveryStrategy = this.getDiscoveryStrategy();
     const discoveryResults = discoveryStrategy.getDiscoveryResults();
     let selectedDeviceId;
     let deviceArray = {};
 
-    socket.on('list_devices', (data, callback) => {
+    session.setHandler('list_devices', async (data) => {
       const devices = Object.values(discoveryResults).map(discoveryResult => {
         return {
           name: 'Surveillance Station ['+ discoveryResult.address +']',
@@ -20,21 +24,22 @@ class SurveillanceStationDriver extends Homey.Driver {
           }
         };
       });
-      callback(null, devices);
+      return devices;
     });
 
-    socket.on('list_devices_selection', (data, callback) => {
-      callback();
+    session.setHandler('list_devices_selection', async (data) => {
       selectedDeviceId = data[0].data.id;
+      return;
     });
 
-    socket.on('login', (data, callback) => {
-      const discoveryResult = discoveryResults[selectedDeviceId];
-      if(!discoveryResult) return callback(new Error('Something went wrong'));
+    session.setHandler('login', async (data) => {
+      try {
+        const discoveryResult = discoveryResults[selectedDeviceId];
+        if(!discoveryResult) throw new Error('Something went wrong');
 
-      let path = 'http://'+ discoveryResult.address +':'+ Number(discoveryResult.txt.admin_port) +'/webapi/query.cgi?api=SYNO.API.Info&method=Query&version=1&query=SYNO.API.Auth,SYNO.SurveillanceStation';
-      util.sendCommand(path)
-        .then(result => {
+        let endpoint = 'http://'+ discoveryResult.address +':'+ Number(discoveryResult.txt.admin_port) +'/webapi/query.cgi?api=SYNO.API.Info&method=Query&version=1&query=SYNO.API.Auth,SYNO.SurveillanceStation';
+        let result = await this.util.sendCommand(endpoint);
+        if (result) {
           deviceArray = {
             name: 'Surveillance Station ['+ discoveryResult.address +']',
             data: {
@@ -47,18 +52,22 @@ class SurveillanceStationDriver extends Homey.Driver {
       				password: data.password
             }
           }
-          callback(false, result);
-        })
-        .catch(error => {
-          callback(error, false);
-        })
-
+        }
+        return Promise.resolve(true);
+      } catch (error) {
+        return Promise.reject(error);
+      }
     });
 
-    socket.on('get_device', (data, callback) => {
-      callback(false, deviceArray);
+    session.setHandler('add_device', async (data) => {
+      return new Promise((resolve, reject) => {
+        try {
+          return resolve(deviceArray);
+        } catch (error) {
+          return reject(error);
+        }
+      });
     });
-
   }
 
 }

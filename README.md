@@ -29,12 +29,12 @@ After that you can add your Synology Surveillance Center as device within Homey 
 * Click on the menu button and select the "Action Rule" option. For each camera that you want to use the motion trigger you will need to add a action rule with the following settings:
   * Information Tab: A recognizable name, Activated Profile and Interuptable
   * Event Tab: Camera, Your Selected Camera and Motion Detected as Event
-  * Action Tab: External Device with URL http://<<homey_ip>>/api/app/surveillance.station.homey/motion/<<camera_name>> . Replace <<homey_ip>> with the local IP of your Homey and <<camera_name>> with a recognizable name. This will be available as tag in the trigger card so you can identify the camera that triggered the motion detected event.
+  * Action Tab: External Device with URL http://<<homey_ip>>/api/app/surveillance.station.homey/event/motion/<<camera_name>> . Replace <<homey_ip>> with the local IP of your Homey and <<camera_name>> with a recognizable name. This will be available as tag in the trigger card so you can identify the camera that triggered the motion detected event.
   * Schedule Tab: fill the whole schedule (or customize it to your needs)
 * Save the event rule and repeat this for every camera, making sure you set the correct <<camera_name>> each time in the action URL.
 
 To be able to send snapshots through email you will need to configure an email account which sends out the email. In the general settings of the Surveillance Station App there is a section to configure your email account. Please pay attention to the extra information when adding a Gmail account, this requires you to use a specific app password which needs to be setup within your Google account.
 
 ## Changelog
-### v1.2.1 - 2020-04-18
-* FIX: fixed issue with camera enabled condition card
+### 3.0.0 - 2020-08-09
+* Updated to SDK3

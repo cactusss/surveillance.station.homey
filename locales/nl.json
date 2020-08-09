@@ -32,11 +32,12 @@
     "testing": "Instellingen zijn succesvol getest. Je zou een test email moeten hebben ontvangen.",
     "success": "Instellingen zijn succesvol opgeslagen."
   },
-  "Unreachable": "Onbereikbaar",
-  "This is a test email which confirms your email settings in the Surveillance Station App are correct.": "Dit is een test email die bevestigd dat je instellingen voor email in de Surveillance Station App correct zijn.",
-  "<h1>Surveillance Station App</h1><p>This is a test email which confirms your email settings in the Surveillance Station App are correct.</p>": "<h1>Surveillance Station App</h1><p>Dit is een test email die bevestigd dat je instellingen voor email in de Surveillance Station App correct zijn.</p>",
-  "<h1>Surveillance Station App</h1><p>This snapshot was taken at ": "<h1>Surveillance Station App</h1><p>Deze snapshot is genomen op ",
-  "Something went wrong": "Er is iets mis gegaan.",
-  "Camera not available, unable to create snapshot.": "Camera niet beschikbaar, niet in staat om snapshot aan te maken.",
-  "Camera not available": "Camera niet beschikbaar"
+  "util": {
+    "email_snapshot_html": "<h1>Surveillance Station App</h1><p>Deze snapshot is genomen op ",
+    "test_email_body_text": "Dit is een test email die bevestigd dat je instellingen voor email in de Surveillance Station App correct zijn.",
+    "test_email_body_html": "<h1>Surveillance Station App</h1><p>Dit is een test email die bevestigd dat je instellingen voor email in de Surveillance Station App correct zijn.</p>"
+  },
+  "app": {
+    "not_available": "Camera niet beschikbaar"
+  }
 }

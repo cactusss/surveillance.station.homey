@@ -1,6 +1,6 @@
 {
 	"id": "surveillance.station.homey",
-	"sdk": 2,
+	"sdk": 3,
   "brandColor": "#272a5d",
 	"name": {
 		"en": "Synology Surveillance Station",
@@ -10,8 +10,8 @@
 		"en": [ "synology", "surveillance station", "security" ],
 		"nl": [ "synology", "surveillance station", "beveiliging" ]
 	},
-	"version": "1.2.1",
-	"compatibility": ">=2.5.1",
+	"version": "3.0.0",
+	"compatibility": ">=5.0.0",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",
@@ -40,6 +40,18 @@
 	"dependencies": {
 		"net": "*"
 	},
+  "api": {
+    "testEmail": {
+      "method": "put",
+      "path": "/testemail",
+      "public": false
+    },
+    "eventTrigger": {
+      "method": "get",
+      "path": "/event/:event/:camera",
+      "public": true
+    }
+  },
   "discovery": {
     "surveillancestation": {
       "type": "mdns-sd",
